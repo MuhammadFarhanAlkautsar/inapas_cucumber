@@ -54,16 +54,20 @@ class VerifikasiDataDiriPage {
   }
 
   async isVerifikasiDataDiriScreenVisible() {
-    return await browser.waitUntil(
-      async () => {
-        return await this.textVerifikasiDataDiri.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 5 detik
-        timeoutMsg:
-          "Halaman Verifikasi Data Diri Screen tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
+    try {
+      await browser.waitUntil(
+        async () => await this.textVerifikasiDataDiri.isDisplayed(),
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Halaman Verifikasi Data Diri Screen tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isVerifikasiDataDiriScreenVisible:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 }
 

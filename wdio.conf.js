@@ -21,7 +21,7 @@ exports.config = {
   // The path of the spec files will be resolved relative from the directory of
   // of the config file unless it's absolute.
   //
-  specs: ["./features/**/bantuan.feature"],
+  specs: ["./features/**/splash.feature"],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -283,6 +283,15 @@ exports.config = {
    * @param {number}                 result.duration  duration of scenario in milliseconds
    * @param {object}                 context          Cucumber World object
    */
+  beforeScenario: async (world, context) => {
+    console.log(
+      `Resetting app and navigating to start screen before scenario: ${world.pickle.name}`
+    );
+
+    // Reset aplikasi ke kondisi awal
+    await driver.terminateApp("id.co.peruri.inapass.dev");
+    await driver.activateApp("id.co.peruri.inapass.dev");
+  },
   // afterScenario: function (world, result, context) {
   // },
   /**
@@ -320,11 +329,15 @@ exports.config = {
    */
   // afterSession: function (config, capabilities, specs) {
   // },
-  afterTest: async function(test, context, { error, result, duration, passed, retries }) {
+  afterTest: async function (
+    test,
+    context,
+    { error, result, duration, passed, retries }
+  ) {
     if (!passed) {
       await browser.takeScreenshot();
     }
-  }
+  },
   /**
    * Gets executed after all workers got shut down and the process is about to exit. An error
    * thrown in the onComplete hook will result in the test run failing.

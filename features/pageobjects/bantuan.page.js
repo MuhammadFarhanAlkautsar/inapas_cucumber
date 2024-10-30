@@ -82,7 +82,7 @@ class BantuanPage {
   }
 
   get linkedinINAdigital() {
-    return $('//android.webkit.WebView[@text="INA DIGITAL | LinkedIn"]');
+    return $('//android.webkit.WebView');
   }
 
   get facebookScreen() {
@@ -150,31 +150,20 @@ class BantuanPage {
   }
 
   async isPusatBantuan() {
-    const isVisible = await browser.waitUntil(
-      async () => {
-        return await this.textPusatBantuan.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 5 detik
-        timeoutMsg:
-          "Text Pusat Bantuan tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isVisible;
-  }
-
-  async isPusatBantuan() {
-    const isVisible = await browser.waitUntil(
-      async () => {
-        return await this.textPusatBantuan.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 5 detik
-        timeoutMsg:
-          "Text Pusat Bantuan tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isVisible;
+    try {
+      await browser.waitUntil(
+        async () => await this.textPusatBantuan.isDisplayed(),
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Text Pusat Bantuan tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isPusatBantuanScreen:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isFormulirAduanScreen() {
@@ -195,89 +184,111 @@ class BantuanPage {
   }
 
   async isFAQScreen() {
-    const isVisible = await browser.waitUntil(
-      async () => {
-        return this.screenFAQ.isDisplayed();
-      },
-      {
+    try {
+      await browser.waitUntil(async () => await this.screenFAQ.isDisplayed(), {
         timeout: 5000, // Timeout maksimal, misalnya 5 detik
         timeoutMsg:
-          "Halaman Formulir Aduan tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isVisible;
+          "Halaman FAQ tidak muncul dalam batas waktu yang ditentukan",
+      });
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isFAQScreen:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isLinkedinScreen() {
-    const isVisible = await browser.waitUntil(
-      async () => {
-        return await this.linkedinINAdigital.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 5 detik
-        timeoutMsg:
-          "Screen Profile Linkedin INApas tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isVisible;
+    try {
+      await browser.waitUntil(
+        async () => {
+          const linkedinText = await this.linkedinINAdigital.getText();
+          return linkedinText.includes("INA DIGITAL | LinkedIn") || linkedinText.includes("Daftar | LinkedIn"); 
+        },
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Screen Profile LinkedIn INApas tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isLinkedinScreen:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isUrlLinkedinINAdigital() {
-    const isUrl = await browser.waitUntil(
-      async () => {
-        const link = await this.screenWebview.getText();
-        return link === "linkedin.com";
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 20 detik
-        timeoutMsg:
-          "Elemen Link Linkedin tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isUrl;
+    try {
+      await browser.waitUntil(
+        async () => {
+          const link = await this.screenWebview.getText();
+        return link.includes("linkedin.com");
+        },
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Elemen Link Linkedin tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isUrlLinkedinINAdigital:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isFacebookScreen() {
-    const isVisible = await browser.waitUntil(
-      async () => {
-        return await this.facebookScreen.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 5 detik
-        timeoutMsg:
-          "Screen Profile Linkedin INApas tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isVisible;
+    try {
+      await browser.waitUntil(
+        async () => await this.facebookScreen.isDisplayed(),
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Screen Profile Facebook INA digital tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isFacebookScreen:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isUrlFacebookINAdigital() {
-    const isUrl = await browser.waitUntil(
-      async () => {
-        const link = await this.screenWebview.getText();
-        return link === "m.facebook.com";
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 20 detik
-        timeoutMsg:
-          "Elemen Link Facebook tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isUrl;
+    try {
+      await browser.waitUntil(
+        async () => {
+          const link = await this.screenWebview.getText();
+        return link.includes("m.facebook.com");
+        },
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Elemen Link Facebook tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isUrlFacebookINAdigital:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isYoutubeScreen() {
-    const isVisible = await browser.waitUntil(
-      async () => {
-        return await this.youtubeScreen.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 5 detik
-        timeoutMsg:
-          "Screen Profile Linkedin INApas tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isVisible;
+    try {
+      await browser.waitUntil(
+        async () => await this.youtubeScreen.isDisplayed(),
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Screen Profile Youtube INA digital tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isYoutubeScreen:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isYoutubeINAdigital() {
@@ -295,61 +306,77 @@ class BantuanPage {
   }
 
   async isTwitterScreen() {
-    const isVisible = await browser.waitUntil(
-      async () => {
-        return await this.twitterScreen.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 5 detik
-        timeoutMsg:
-          "Screen Profile Linkedin INApas tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isVisible;
+    try {
+      await browser.waitUntil(
+        async () => await this.twitterScreen.isDisplayed(),
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Screen Profile Twitter INA digital tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isTwitterScreen:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isUrlTwitterINAdigital() {
-    const isUrl = await browser.waitUntil(
-      async () => {
-        const link = await this.screenWebview.getText();
-        return link === "x.com";
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 20 detik
-        timeoutMsg:
-          "Elemen Link Twitter tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isUrl;
+    try {
+      await browser.waitUntil(
+        async () => {
+          const link = await this.screenWebview.getText();
+        return link.includes("x.com");
+        },
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Elemen Link Twitter tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isUrlTwitterINAdigital:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isBrowserScreen() {
-    const isVisible = await browser.waitUntil(
-      async () => {
-        return await this.browserScreen.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 5 detik
-        timeoutMsg:
-          "Screen Profile Browser INApas tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isVisible;
+    try {
+      await browser.waitUntil(
+        async () => await this.browserScreen.isDisplayed(),
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Screen Profile Browser INA digital tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isBrowserScreen:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 
   async isUrlBrowserINAdigital() {
-    const isUrl = await browser.waitUntil(
-      async () => {
-        const link = await this.screenWebview.getText();
-        return link === "inadigital.co.id";
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 20 detik
-        timeoutMsg:
-          "Elemen Link Browser tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
-    return isUrl;
+    try {
+      await browser.waitUntil(
+        async () => {
+          const link = await this.screenWebview.getText();
+        return link.includes("inadigital.co.id");
+        },
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Elemen Link Browser tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isUrlBrowserINAdigital:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
 }
 

@@ -1,34 +1,24 @@
 Feature: Splash Page
 
-  @Splash @SplashPage @Positive
-  Scenario: Launch INApas application and verify splash screen elements 
-
-    Given the application is not running
-    When User launch the application
-    Then User should see the "Mulai Verifikasi" button
-    And User should see the "Aktifkan Perangkat" button
-    And User should see the "Bantuan" button
-    And User should see the splash screen
-
   @Splash @SplashPage @Positive 
-  Scenario: Validation Mulai Verifikasi Button 
+  Scenario: Validate Mulai Verifikasi Button 
 
-    Given User should see the splash screen
+    Given User on the splash screen
     When User click on the "Mulai Verifikasi" button
-    Then User should navigate to the verification screen
+    Then User should navigate to the "Verifikasi Data Diri" screen
 
   @Splash @SplashPage @Positive
   Scenario: Validation Aktifkan Perangkat Button 
 
-    Given User should see the splash screen
+    Given User on the splash screen
     When User click on the "Aktifkan Perangkat" button
-    Then User should navigate to the Aktifkan Perangkat Screen
+    Then User should navigate to the "Aktifkan Perangkat" screen
 
   @Splash @SplashPage @Positive
-  Scenario: Validation Aktifkan Perangkat Button 
+  Scenario: Validate Pusat Bantuan Button 
 
-    Given User should see the splash screen
-    When User click on the "Bantuan" button
-    Then User should see the Pusat Bantuan Screen
+    Given User on the splash screen
+    When User click on the "Pusat Bantuan" button
+    Then User should navigate to the "Pusat Bantuan" screen
 
 

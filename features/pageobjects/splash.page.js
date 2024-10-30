@@ -21,7 +21,7 @@ class SplashPage {
 
   get icBantuan() {
     return $(
-      '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ImageView[1]'
+      '~Pusat Bantuan'
     );
   }
 
@@ -93,17 +93,21 @@ class SplashPage {
   }
 
   async isSplashScreenVisible() {
-    return await browser.waitUntil(
-      async () => {
-        return await this.textSplash.isDisplayed();
-      },
-      {
-        timeout: 5000, // Timeout maksimal, misalnya 10 detik
-        timeoutMsg: "Halaman Splash Screen tidak muncul dalam batas waktu yang ditentukan",
-      }
-    );
+    try {
+      await browser.waitUntil(
+        async () => await this.textSplash.isDisplayed(),
+        {
+          timeout: 5000, // Timeout maksimal, misalnya 5 detik
+          timeoutMsg:
+            "Halaman Splash Screen tidak muncul dalam batas waktu yang ditentukan",
+        }
+      );
+      return true; // Mengembalikan true jika elemen terlihat
+    } catch (error) {
+      console.warn("Warning in isSplashScreenVisible:", error.message);
+      return false; // Mengembalikan false jika elemen tidak ditemukan
+    }
   }
-  
 
   // Fungsi untuk mengecek apakah popup error muncul, lalu handle back dan retry
   async handlePopupErrorAndRetry(action, maxRetries = 5) {
